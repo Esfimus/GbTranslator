@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="decaMargin">20dp</dimen>
+    <dimen name="milliMargin">12dp</dimen>
+    <dimen name="microMargin">8dp</dimen>
+    <dimen name="nanoMargin">4dp</dimen>
+    <dimen name="minHeight">48dp</dimen>
+    <dimen name="dialogHeight">240dp</dimen>
+</resources>
