@@ -2,28 +2,29 @@ package com.esfimus.gbtranslator.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.esfimus.gbtranslator.model.data.AppState
-import com.esfimus.gbtranslator.model.repository.RepositoryImpl
-import com.esfimus.gbtranslator.model.source.DataSourceLocal
-import com.esfimus.gbtranslator.model.source.DataSourceRemote
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.observers.DisposableObserver
+import javax.inject.Inject
 
-class MainViewModel(
-    private val interactor: MainInteractor = MainInteractor(
-        RepositoryImpl(DataSourceRemote()),
-        RepositoryImpl(DataSourceLocal())
-    )
+class MainViewModel @Inject constructor(
+    private val interactor: MainInteractor
 ) : BaseViewModel<AppState>() {
+
     private var appState: AppState? = null
 
-    override fun getData(word: String, isOnline: Boolean): LiveData<AppState> {
+    fun subscribe(): LiveData<AppState> = liveData
+
+    private fun doOnSubscribe(): (Disposable) -> Unit =
+        { liveData.value = AppState.Loading(null) }
+
+    override fun getData(word: String, isOnline: Boolean) {
         compositeDisposable.add(
             interactor.getData(word, isOnline)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doOnSubscribe { liveData.value = AppState.Loading(null) }
+                .doOnSubscribe(doOnSubscribe())
                 .subscribeWith(getObserver())
         )
-        return super.getData(word, isOnline)
     }
 
     private fun getObserver(): DisposableObserver<AppState> {
@@ -38,7 +39,6 @@ class MainViewModel(
             }
 
             override fun onComplete() { }
-
         }
     }
 }
