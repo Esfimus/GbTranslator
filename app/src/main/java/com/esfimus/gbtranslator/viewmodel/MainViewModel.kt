@@ -2,43 +2,66 @@ package com.esfimus.gbtranslator.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.esfimus.gbtranslator.model.data.AppState
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.observers.DisposableObserver
-import javax.inject.Inject
+import com.esfimus.gbtranslator.model.data.DataModel
+import com.esfimus.gbtranslator.model.data.Meanings
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainViewModel @Inject constructor(
-    private val interactor: MainInteractor
-) : BaseViewModel<AppState>() {
+class MainViewModel (private val interactor: MainInteractor) : BaseViewModel<AppState>() {
 
-    private var appState: AppState? = null
+    private val liveDataToObserve: LiveData<AppState> = liveData
 
-    fun subscribe(): LiveData<AppState> = liveData
-
-    private fun doOnSubscribe(): (Disposable) -> Unit =
-        { liveData.value = AppState.Loading(null) }
+    fun subscribe(): LiveData<AppState> = liveDataToObserve
 
     override fun getData(word: String, isOnline: Boolean) {
-        compositeDisposable.add(
-            interactor.getData(word, isOnline)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnSubscribe(doOnSubscribe())
-                .subscribeWith(getObserver())
-        )
+        liveData.value = AppState.Loading(null)
+        cancelJob()
+        viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
     }
 
-    private fun getObserver(): DisposableObserver<AppState> {
-        return object : DisposableObserver<AppState>() {
-            override fun onNext(state: AppState) {
-                appState = state
-                liveData.value = state
-            }
+    override fun handleError(error: Throwable) {
+        liveData.postValue(AppState.Error(error))
+    }
 
-            override fun onError(e: Throwable) {
-                liveData.value = AppState.Error(e)
-            }
+    private suspend fun startInteractor(word: String, isOnline: Boolean) =
+        withContext(Dispatchers.IO) {
+            liveData.postValue(parseSearchResults(interactor.getData(word, isOnline)))
+        }
 
-            override fun onComplete() { }
+    override fun onCleared() {
+        liveData.value = AppState.Success(null)
+        super.onCleared()
+    }
+
+    private fun parseSearchResults(data: AppState): AppState {
+        val newSearchResults = arrayListOf<DataModel>()
+        when (data) {
+            is AppState.Success -> {
+                val searchResults = data.data
+                if (!searchResults.isNullOrEmpty()) {
+                    for (searchResult in searchResults) {
+                        parseResult(searchResult, newSearchResults)
+                    }
+                }
+            }
+            else -> println("shit")
+        }
+
+        return AppState.Success(newSearchResults)
+    }
+
+    private fun parseResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
+        if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
+            val newMeanings = arrayListOf<Meanings>()
+            for (meaning in dataModel.meanings) {
+                if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
+                    newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                }
+            }
+            if (newMeanings.isNotEmpty()) {
+                newDataModels.add(DataModel(dataModel.text, newMeanings))
+            }
         }
     }
 }
