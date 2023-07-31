@@ -1,27 +1,22 @@
 package com.esfimus.gbtranslator.view.activity
 
-import com.esfimus.gbtranslator.view.adapter.RecyclerAdapter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.model.data.DataModel
+import com.esfimus.gbtranslator.view.adapter.RecyclerAdapter
 import com.esfimus.gbtranslator.view.fragment.SearchDialogFragment
 import com.esfimus.gbtranslator.viewmodel.MainInteractor
 import com.esfimus.gbtranslator.viewmodel.MainViewModel
-import dagger.android.AndroidInjection
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val BOTTOM_SHEET_TAG = "shit"
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var ui: ActivityMainBinding
     override lateinit var model: MainViewModel
@@ -34,13 +29,15 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         ui = ActivityMainBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        model = viewModelFactory.create(MainViewModel::class.java)
+        if (ui.recyclerview.adapter != null) {
+            throw IllegalStateException("Initiate ViewModel first")
+        }
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
         model.subscribe().observe(this@MainActivity) { renderData(it) }
 
         ui.searchFab.setOnClickListener {
