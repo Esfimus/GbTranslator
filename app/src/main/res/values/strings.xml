@@ -6,4 +6,6 @@
     <string name="undefinedError">Undefined error</string>
     <string name="reload">Reload</string>
     <string name="emptyServerResponse">Response from server is empty</string>
+    <string name="title_activity_description">DescriptionActivity</string>
+    <string name="image">Image</string>
 </resources>

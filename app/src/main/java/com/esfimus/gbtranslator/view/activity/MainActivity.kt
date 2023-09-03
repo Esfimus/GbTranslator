@@ -2,7 +2,6 @@ package com.esfimus.gbtranslator.view.activity
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
@@ -24,7 +23,12 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     private val onListItemClickListener: RecyclerAdapter.OnListItemClickListener =
         object : RecyclerAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(DescriptionActivity.getIntent(
+                    this@MainActivity,
+                    data.text!!,
+                    data.meanings?.get(0)?.translation?.translation.toString(),
+                    "https${data.meanings?.get(0)?.imageUrl.toString().substringAfter("https")}"
+                ))
             }
         }
 
