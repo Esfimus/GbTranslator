@@ -6,6 +6,7 @@ object Config {
     const val minSdk = 26
     const val targetSdk = 33
     val javaVersion = JavaVersion.VERSION_19
+    const val jvmTarget = "19"
 }
 
 object Releases {
