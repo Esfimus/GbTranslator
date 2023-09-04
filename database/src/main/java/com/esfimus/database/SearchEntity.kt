@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.database
+package com.esfimus.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

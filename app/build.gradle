@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    //Modules
+    implementation project(Modules.database)
 
     // Design
     implementation Design.appcompat

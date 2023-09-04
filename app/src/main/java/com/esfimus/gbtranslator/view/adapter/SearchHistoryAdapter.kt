@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbtranslator.R
-import com.esfimus.gbtranslator.database.SearchEntity
+import com.esfimus.database.SearchEntity
 import com.esfimus.gbtranslator.databinding.RecyclerviewSearchItemBinding
 
 class SearchHistoryAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<SearchEntity>
+    private var data: List<com.esfimus.database.SearchEntity>
 ) : RecyclerView.Adapter<SearchHistoryAdapter.RecyclerItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
@@ -30,7 +30,7 @@ class SearchHistoryAdapter(
 
         private val ui = RecyclerviewSearchItemBinding.bind(itemView)
 
-        fun bind(data: SearchEntity) {
+        fun bind(data: com.esfimus.database.SearchEntity) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 with (ui) {
                     header.text = data.word
@@ -40,11 +40,11 @@ class SearchHistoryAdapter(
         }
     }
 
-    private fun open(listItem: SearchEntity) {
+    private fun open(listItem: com.esfimus.database.SearchEntity) {
         onListItemClickListener.onItemClick(listItem)
     }
 
     interface OnListItemClickListener {
-        fun onItemClick(data: SearchEntity)
+        fun onItemClick(data: com.esfimus.database.SearchEntity)
     }
 }

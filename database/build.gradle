@@ -1,0 +1,26 @@
+plugins {
+    id 'com.google.devtools.ksp' version '1.9.0-1.0.11'
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+
+android {
+    namespace Config.libDatabaseId
+}
+
+dependencies {
+
+    // Design
+    implementation Design.appcompat
+
+    // Kotlin
+    implementation Kotlin.core
+
+    // Room
+    implementation Room.roomRuntime
+    ksp Room.roomCompiler
+    implementation Room.roomKtx
+}

@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GbTranslator"
 include ':app'
+include ':model'
+include ':database'

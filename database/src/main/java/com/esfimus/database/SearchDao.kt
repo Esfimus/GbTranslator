@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.database
+package com.esfimus.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
