@@ -25,6 +25,15 @@
             android:src="@drawable/icon_search"
             android:contentDescription="@string/search" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/searchHistoryFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="@dimen/decaMargin"
+            android:src="@drawable/icon_history"
+            android:contentDescription="@string/searchHistory" />
+
     </FrameLayout>
 
     <FrameLayout

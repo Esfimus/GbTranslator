@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.viewmodel
+package com.esfimus.gbtranslator.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
