@@ -3,7 +3,6 @@ package com.esfimus.gbtranslator.view.activity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.esfimus.gbtranslator.database.SearchEntity
 import com.esfimus.gbtranslator.databinding.ActivitySearchHistoryBinding
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.view.adapter.SearchHistoryAdapter
@@ -20,7 +19,7 @@ class SearchHistoryActivity : BaseActivity<AppState, MainInteractor>() {
     private val db: DatabaseViewModel by lazy { ViewModelProvider(this)[DatabaseViewModel::class.java] }
     private val onListItemClickListener: SearchHistoryAdapter.OnListItemClickListener =
         object : SearchHistoryAdapter.OnListItemClickListener {
-            override fun onItemClick(data: SearchEntity) {
+            override fun onItemClick(data: com.esfimus.database.SearchEntity) {
                 model.getData(data.word, true)
                 finish()
             }

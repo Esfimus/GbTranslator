@@ -4,23 +4,20 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.esfimus.gbtranslator.database.SearchDatabase
-import com.esfimus.gbtranslator.database.SearchEntity
-import com.esfimus.gbtranslator.database.SearchRepository
 import kotlinx.coroutines.launch
 
 class DatabaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    val searchHistoryLive: LiveData<List<SearchEntity>>
-    private val searchRepository: SearchRepository
+    val searchHistoryLive: LiveData<List<com.esfimus.database.SearchEntity>>
+    private val searchRepository: com.esfimus.database.SearchRepository
 
     init {
-        val searchDao = SearchDatabase.getSearchDatabase(application).searchDao()
-        searchRepository = SearchRepository(searchDao)
+        val searchDao = com.esfimus.database.SearchDatabase.getSearchDatabase(application).searchDao()
+        searchRepository = com.esfimus.database.SearchRepository(searchDao)
         searchHistoryLive = searchRepository.wordsHistory
     }
 
-    fun addWord(word: SearchEntity) = viewModelScope.launch {
+    fun addWord(word: com.esfimus.database.SearchEntity) = viewModelScope.launch {
         searchRepository.insertWord(word)
     }
 }

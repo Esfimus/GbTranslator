@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.database
+package com.esfimus.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -11,6 +11,6 @@ interface SearchDao {
     @Query("SELECT * FROM SearchEntity ORDER BY id DESC")
     fun getSearchEntities(): LiveData<List<SearchEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: SearchEntity)
 }

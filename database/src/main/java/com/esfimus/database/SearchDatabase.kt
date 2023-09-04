@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.database
+package com.esfimus.database
 
 import android.content.Context
 import androidx.room.Database

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esfimus.gbtranslator.R
-import com.esfimus.gbtranslator.database.SearchEntity
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.model.data.DataModel
@@ -55,7 +54,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
                     model.getData(searchWord, true)
-                    db.addWord(SearchEntity(0, searchWord))
+                    db.addWord(com.esfimus.database.SearchEntity(0, searchWord))
                 }
             })
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_TAG)
@@ -90,7 +89,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                     if (appState.progress != null) {
                         progressHorizontal.visibility = View.VISIBLE
                         progressRound.visibility = View.GONE
-                        progressHorizontal.progress = appState.progress
+                        progressHorizontal.progress = appState.progress!!
                     } else {
                         progressHorizontal.visibility = View.GONE
                         progressRound.visibility = View.VISIBLE

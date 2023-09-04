@@ -55,8 +55,8 @@ class MainViewModel (private val interactor: MainInteractor) : BaseViewModel<App
     private fun parseResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
         if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
             val newMeanings = arrayListOf<Meanings>()
-            for (meaning in dataModel.meanings) {
-                if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
+            for (meaning in dataModel.meanings!!) {
+                if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
                     newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
                 }
             }
