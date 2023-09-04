@@ -1,0 +1,28 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace Config.libDatabaseId
+}
+
+dependencies {
+    // Design
+    implementation Design.appcompat
+    implementation Design.material
+
+    // Kotlin
+    implementation Kotlin.core
+
+    // Retrofit
+    implementation Retrofit.retrofit
+    implementation Retrofit.converterGson
+    implementation Retrofit.interceptor
+    implementation Retrofit.coroutinesAdapter
+
+    // Test
+    testImplementation TestImpl.junit
+    androidTestImplementation TestImpl.extJunit
+    androidTestImplementation TestImpl.espressoCore
+}

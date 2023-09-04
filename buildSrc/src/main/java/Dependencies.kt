@@ -3,6 +3,7 @@ import org.gradle.api.JavaVersion
 object Config {
     const val appId = "com.esfimus.gbtranslator"
     const val libDatabaseId = "com.esfimus.database"
+    const val libModelId = "com.esfimus.model"
     const val compileSdk = 33
     const val minSdk = 26
     const val targetSdk = 33
@@ -17,6 +18,7 @@ object Releases {
 
 object Modules {
     const val database = ":database"
+    const val model = ":model"
 }
 
 object Versions {

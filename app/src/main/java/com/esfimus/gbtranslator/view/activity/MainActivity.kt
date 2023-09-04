@@ -89,7 +89,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                     if (appState.progress != null) {
                         progressHorizontal.visibility = View.VISIBLE
                         progressRound.visibility = View.GONE
-                        progressHorizontal.progress = appState.progress
+                        progressHorizontal.progress = appState.progress!!
                     } else {
                         progressHorizontal.visibility = View.GONE
                         progressRound.visibility = View.VISIBLE
