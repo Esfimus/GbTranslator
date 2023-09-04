@@ -1,24 +1,29 @@
 package com.esfimus.gbtranslator.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esfimus.gbtranslator.R
+import com.esfimus.gbtranslator.database.SearchEntity
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.model.data.DataModel
 import com.esfimus.gbtranslator.view.adapter.RecyclerAdapter
 import com.esfimus.gbtranslator.view.fragment.SearchDialogFragment
-import com.esfimus.gbtranslator.viewmodel.MainInteractor
-import com.esfimus.gbtranslator.viewmodel.MainViewModel
+import com.esfimus.gbtranslator.view.interactor.MainInteractor
+import com.esfimus.gbtranslator.view.viewmodel.DatabaseViewModel
+import com.esfimus.gbtranslator.view.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val BOTTOM_SHEET_TAG = "shit"
+const val BOTTOM_SHEET_TAG = "nyCG25uXTLdYgShJPG"
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var ui: ActivityMainBinding
     override lateinit var model: MainViewModel
+    private val db: DatabaseViewModel by lazy { ViewModelProvider(this)[DatabaseViewModel::class.java] }
     private var adapter: RecyclerAdapter? = null
     private val onListItemClickListener: RecyclerAdapter.OnListItemClickListener =
         object : RecyclerAdapter.OnListItemClickListener {
@@ -50,9 +55,14 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
                     model.getData(searchWord, true)
+                    db.addWord(SearchEntity(0, searchWord))
                 }
             })
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_TAG)
+        }
+
+        ui.searchHistoryFab.setOnClickListener {
+            startActivity(Intent(this, SearchHistoryActivity::class.java))
         }
     }
 

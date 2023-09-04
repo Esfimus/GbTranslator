@@ -5,8 +5,8 @@ import com.esfimus.gbtranslator.model.repository.Repository
 import com.esfimus.gbtranslator.model.repository.RepositoryImpl
 import com.esfimus.gbtranslator.model.source.RetrofitImpl
 import com.esfimus.gbtranslator.model.source.RoomDataBase
-import com.esfimus.gbtranslator.viewmodel.MainInteractor
-import com.esfimus.gbtranslator.viewmodel.MainViewModel
+import com.esfimus.gbtranslator.view.interactor.MainInteractor
+import com.esfimus.gbtranslator.view.viewmodel.MainViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

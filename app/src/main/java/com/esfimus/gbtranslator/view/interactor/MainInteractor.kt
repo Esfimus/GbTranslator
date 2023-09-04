@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.viewmodel
+package com.esfimus.gbtranslator.view.interactor
 
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.model.data.DataModel

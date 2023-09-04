@@ -1,9 +1,10 @@
-package com.esfimus.gbtranslator.viewmodel
+package com.esfimus.gbtranslator.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.esfimus.gbtranslator.model.data.AppState
 import com.esfimus.gbtranslator.model.data.DataModel
 import com.esfimus.gbtranslator.model.data.Meanings
+import com.esfimus.gbtranslator.view.interactor.MainInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
