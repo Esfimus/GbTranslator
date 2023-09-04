@@ -13,12 +13,6 @@ class SearchHistoryAdapter(
     private var data: List<SearchEntity>
 ) : RecyclerView.Adapter<SearchHistoryAdapter.RecyclerItemViewHolder>() {
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    fun setData(data: List<SearchEntity>) {
-//        this.data = data
-//        notifyDataSetChanged()
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         return RecyclerItemViewHolder(
             LayoutInflater.from(parent.context)
