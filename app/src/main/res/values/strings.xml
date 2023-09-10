@@ -1,12 +1,15 @@
 <resources>
-    <string name="app_name">GbTranslator</string>
+    <string name="appName">GbTranslator</string>
     <string name="search">Search</string>
     <string name="searchHistory">Search history</string>
-    <string name="enter_text">Enter text to translate</string>
+    <string name="enterText">Enter text to translate</string>
     <string name="error">Error</string>
-    <string name="undefinedError">Undefined error</string>
-    <string name="reload">Reload</string>
     <string name="emptyServerResponse">Response from server is empty</string>
-    <string name="title_activity_description">DescriptionActivity</string>
+    <string name="titleActivityDescription">DescriptionActivity</string>
     <string name="image">Image</string>
+    <string name="dialogTitleSorry">Sorry</string>
+    <string name="dialogMessageDeviceOffline">Check internet connection.</string>
+    <string name="dialogTitleDeviceOffline">No internet connection</string>
+    <string name="dialogTitleStub">Undefined error</string>
+    <string name="dialogButtonCancel">Cancel</string>
 </resources>

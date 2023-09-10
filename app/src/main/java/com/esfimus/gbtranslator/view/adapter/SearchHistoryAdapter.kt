@@ -1,17 +1,24 @@
 package com.esfimus.gbtranslator.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.esfimus.database.SearchEntity
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.RecyclerviewSearchItemBinding
+import com.esfimus.model.data.DataModel
 
-class SearchHistoryAdapter(
-    private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<SearchEntity>
-) : RecyclerView.Adapter<SearchHistoryAdapter.RecyclerItemViewHolder>() {
+class SearchHistoryAdapter(private var onListItemClickListener: OnListItemClickListener) :
+    RecyclerView.Adapter<SearchHistoryAdapter.RecyclerItemViewHolder>() {
+
+    private var data: List<DataModel> = arrayListOf()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(data: List<DataModel>) {
+        this.data = data
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         return RecyclerItemViewHolder(
@@ -30,21 +37,17 @@ class SearchHistoryAdapter(
 
         private val ui = RecyclerviewSearchItemBinding.bind(itemView)
 
-        fun bind(data: SearchEntity) {
+        fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 with (ui) {
-                    header.text = data.word
+                    header.text = data.text
                     itemCard.setOnClickListener { open(data) }
                 }
             }
         }
     }
 
-    private fun open(listItem: SearchEntity) {
+    private fun open(listItem: DataModel) {
         onListItemClickListener.onItemClick(listItem)
-    }
-
-    interface OnListItemClickListener {
-        fun onItemClick(data: SearchEntity)
     }
 }

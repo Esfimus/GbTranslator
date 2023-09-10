@@ -20,6 +20,7 @@ dependencies {
     implementation Retrofit.converterGson
     implementation Retrofit.interceptor
     implementation Retrofit.coroutinesAdapter
+    implementation project(path: ':database')
 
     // Test
     testImplementation TestImpl.junit

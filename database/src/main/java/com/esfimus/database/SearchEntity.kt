@@ -6,5 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class SearchEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val word: String
+    val word: String,
+    val description: String?
 )

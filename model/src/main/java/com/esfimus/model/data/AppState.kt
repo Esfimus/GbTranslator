@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.model.data
+package com.esfimus.model.data
 
 sealed class AppState {
     data class Success(val data: List<DataModel>?) : AppState()

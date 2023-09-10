@@ -3,13 +3,15 @@ package com.esfimus.gbtranslator.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivityDescriptionBinding
+import com.esfimus.gbtranslator.network.OnlineLiveData
+import com.esfimus.gbtranslator.view.fragment.AlertDialogFragment
 
 class DescriptionActivity : AppCompatActivity() {
 
@@ -17,18 +19,11 @@ class DescriptionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         ui = ActivityDescriptionBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        setActionbarHomeButtonAsUp()
-        ui.refreshScreen.setOnRefreshListener { setData() }
+        ui.refreshScreen.setOnRefreshListener { startLoadingOrShowError() }
         setData()
-    }
-
-    private fun setActionbarHomeButtonAsUp() {
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setData() {
@@ -40,7 +35,24 @@ class DescriptionActivity : AppCompatActivity() {
             if (imageLink.isNullOrBlank()) {
                 stopRefreshAnimation()
             } else {
-                descriptionImage.loadCoilImage(imageLink)
+                descriptionImage.loadCoilImage("https:$imageLink")
+                stopRefreshAnimation()
+            }
+        }
+    }
+
+    private fun startLoadingOrShowError() {
+        OnlineLiveData(this).observe(this@DescriptionActivity) {
+            if (it) {
+                setData()
+            } else {
+                AlertDialogFragment.newInstance(
+                    getString(R.string.dialogTitleDeviceOffline),
+                    getString(R.string.dialogMessageDeviceOffline)
+                ).show(
+                    supportFragmentManager,
+                    DIALOG_FRAGMENT_TAG
+                )
                 stopRefreshAnimation()
             }
         }
@@ -63,20 +75,11 @@ class DescriptionActivity : AppCompatActivity() {
         imageLoader.enqueue(request)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     companion object {
-        const val WORD_EXTRA = "6zavmpmv4KDXH5VSyuEDXt4S6lzzVW"
-        const val DESCRIPTION_EXTRA = "F1ufVTZosHLEE4d0QffeFbkI5LjMVnn0R"
-        const val URL_EXTRA = "Xox92doWKEHmDrvuw9gY9Wdr2dc"
+        private const val WORD_EXTRA = "word extra"
+        private const val DESCRIPTION_EXTRA = "description extra"
+        private const val URL_EXTRA = "url extra"
+        private const val DIALOG_FRAGMENT_TAG = "dialog fragment"
 
         fun getIntent(
             context: Context,
