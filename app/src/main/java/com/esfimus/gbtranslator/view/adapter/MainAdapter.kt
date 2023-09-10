@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.RecyclerviewItemBinding
-import com.esfimus.gbtranslator.model.data.DataModel
+import com.esfimus.model.data.DataModel
+import com.esfimus.model.repository.convertMeaningsToSingleString
 
-class RecyclerAdapter(
-    private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>
-) : RecyclerView.Adapter<RecyclerAdapter.RecyclerItemViewHolder>() {
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
+    RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+
+    private var data: List<DataModel> = arrayListOf()
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<DataModel>) {
@@ -41,7 +42,7 @@ class RecyclerAdapter(
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 with (ui) {
                     header.text = data.text
-                    description.text = data.meanings?.get(0)?.translation?.translation
+                    description.text = convertMeaningsToSingleString(data.meanings)
                     itemCard.setOnClickListener { open(data) }
                 }
             }
@@ -50,9 +51,5 @@ class RecyclerAdapter(
 
     private fun open(listItem: DataModel) {
         onListItemClickListener.onItemClick(listItem)
-    }
-
-    interface OnListItemClickListener {
-        fun onItemClick(data: DataModel)
     }
 }

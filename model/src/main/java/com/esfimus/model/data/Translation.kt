@@ -1,7 +1,5 @@
-package com.esfimus.gbtranslator.model.data
+package com.esfimus.model.data
 
-import com.google.gson.annotations.SerializedName
-
-class Translation(
-    @field:SerializedName("text") val translation: String?
+data class Translation(
+    val translatedMeaning: String = ""
 )

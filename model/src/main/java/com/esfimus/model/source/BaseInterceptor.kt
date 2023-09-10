@@ -1,4 +1,4 @@
-package com.esfimus.gbtranslator.model.source
+package com.esfimus.model.source
 
 import okhttp3.Interceptor
 import okhttp3.Response

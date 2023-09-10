@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/searchButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:hint="@string/enter_text"
+        android:hint="@string/enterText"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/icon_clear"
         app:endIconCheckable="true"

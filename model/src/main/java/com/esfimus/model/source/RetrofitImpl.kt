@@ -1,6 +1,6 @@
-package com.esfimus.gbtranslator.model.source
+package com.esfimus.model.source
 
-import com.esfimus.gbtranslator.model.data.DataModel
+import com.esfimus.model.dto.SearchResultDto
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -10,9 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 const val BASE_URL = "https://dictionary.skyeng.ru/api/public/v1/"
 
-class RetrofitImpl : DataSource<List<DataModel>> {
-
-    override suspend fun getData(word: String): List<DataModel> =
+class RetrofitImpl : DataSource<List<SearchResultDto>> {
+    override suspend fun getData(word: String): List<SearchResultDto> =
         getService(BaseInterceptor.interceptor).searchAsync(word).await()
 
     private fun getService(interceptor: Interceptor): ApiService =

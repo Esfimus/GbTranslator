@@ -1,27 +1,29 @@
 package com.esfimus.gbtranslator.view.activity
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivitySearchHistoryBinding
-import com.esfimus.gbtranslator.model.data.AppState
+import com.esfimus.gbtranslator.view.adapter.OnListItemClickListener
 import com.esfimus.gbtranslator.view.adapter.SearchHistoryAdapter
-import com.esfimus.gbtranslator.view.interactor.MainInteractor
-import com.esfimus.gbtranslator.view.viewmodel.DatabaseViewModel
-import com.esfimus.gbtranslator.view.viewmodel.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.esfimus.gbtranslator.view.interactor.SearchHistoryInteractor
+import com.esfimus.gbtranslator.view.viewById
+import com.esfimus.gbtranslator.view.viewmodel.SearchHistoryViewModel
+import com.esfimus.model.data.AppState
+import com.esfimus.model.data.DataModel
+import org.koin.android.ext.android.inject
 
-class SearchHistoryActivity : BaseActivity<AppState, MainInteractor>() {
+class SearchHistoryActivity : BaseActivity<AppState, SearchHistoryInteractor>() {
 
     private lateinit var ui: ActivitySearchHistoryBinding
-    override lateinit var model: MainViewModel
+    override lateinit var model: SearchHistoryViewModel
+    private val adapter: SearchHistoryAdapter by lazy { SearchHistoryAdapter(onListItemClickListener) }
+    private val searchHistoryRecyclerView by viewById<RecyclerView>(R.id.recyclerview)
 
-    private val db: DatabaseViewModel by lazy { ViewModelProvider(this)[DatabaseViewModel::class.java] }
-    private val onListItemClickListener: SearchHistoryAdapter.OnListItemClickListener =
-        object : SearchHistoryAdapter.OnListItemClickListener {
-            override fun onItemClick(data: com.esfimus.database.SearchEntity) {
-                model.getData(data.word, true)
-                finish()
+    private val onListItemClickListener: OnListItemClickListener =
+        object : OnListItemClickListener {
+            override fun onItemClick(data: DataModel) {
+                model.getData(data.text, true)
             }
         }
 
@@ -30,17 +32,22 @@ class SearchHistoryActivity : BaseActivity<AppState, MainInteractor>() {
         ui = ActivitySearchHistoryBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        val viewModel: MainViewModel by viewModel()
-        model = viewModel
-
-        db.searchHistoryLive.observe(this@SearchHistoryActivity) {
-            val searchAdapter = SearchHistoryAdapter(onListItemClickListener, it)
-            ui.recyclerview.apply {
-                layoutManager = LinearLayoutManager(this@SearchHistoryActivity)
-                adapter = searchAdapter
-            }
+        if (searchHistoryRecyclerView.adapter != null) {
+            throw IllegalStateException("Initiate ViewModel first")
         }
+        val viewModel: SearchHistoryViewModel by inject()
+        model = viewModel
+        model.subscribe().observe(this@SearchHistoryActivity) { renderData(it) }
+
+        searchHistoryRecyclerView.adapter = adapter
     }
 
-    override fun renderData(appState: AppState) {}
+    override fun onResume() {
+        super.onResume()
+        model.getData("", false)
+    }
+
+    override fun setDataToAdapter(data: List<DataModel>) {
+        adapter.setData(data)
+    }
 }

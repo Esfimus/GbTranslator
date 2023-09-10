@@ -1,8 +1,6 @@
-package com.esfimus.gbtranslator.model.data
+package com.esfimus.model.data
 
-import com.google.gson.annotations.SerializedName
-
-class Meanings (
-    @field:SerializedName("translation") val translation: Translation?,
-    @field:SerializedName("imageUrl") val imageUrl: String?
+data class Meanings(
+    val translation: Translation = Translation(),
+    val imageUrl: String = ""
 )

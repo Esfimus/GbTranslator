@@ -1,6 +1,6 @@
-package com.esfimus.gbtranslator.model.source
+package com.esfimus.model.source
 
-import com.esfimus.gbtranslator.model.data.DataModel
+import com.esfimus.model.dto.SearchResultDto
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("words/search")
-    fun searchAsync(@Query("search") wordToSearch: String): Deferred<List<DataModel>>
+    fun searchAsync(@Query("search") wordToSearch: String): Deferred<List<SearchResultDto>>
 }

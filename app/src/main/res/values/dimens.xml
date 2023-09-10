@@ -6,5 +6,4 @@
     <dimen name="nanoMargin">4dp</dimen>
     <dimen name="minHeight">48dp</dimen>
     <dimen name="dialogHeight">240dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

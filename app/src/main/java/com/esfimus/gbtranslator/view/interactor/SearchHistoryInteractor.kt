@@ -6,19 +6,20 @@ import com.esfimus.model.repository.Repository
 import com.esfimus.model.repository.RepositoryLocal
 import com.esfimus.model.repository.mapSearchResultToResult
 
-class MainInteractor(
+class SearchHistoryInteractor(
     private val repositoryRemote: Repository<List<SearchResultDto>>,
     private val repositoryLocal: RepositoryLocal<List<SearchResultDto>>
-) : Interactor<AppState> {
+): Interactor<AppState> {
 
     override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
-        val appState: AppState
-        if (fromRemoteSource) {
-            appState = AppState.Success(mapSearchResultToResult(repositoryRemote.getData(word)))
-            repositoryLocal.saveToDB(appState)
-        } else {
-            appState = AppState.Success(mapSearchResultToResult(repositoryLocal.getData(word)))
-        }
-        return appState
+        return AppState.Success(
+            mapSearchResultToResult(
+                if (fromRemoteSource) {
+                    repositoryRemote
+                } else {
+                    repositoryLocal
+                }.getData(word)
+            )
+        )
     }
 }
