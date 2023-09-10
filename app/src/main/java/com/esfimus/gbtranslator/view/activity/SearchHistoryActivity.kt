@@ -1,10 +1,13 @@
 package com.esfimus.gbtranslator.view.activity
 
 import android.os.Bundle
+import androidx.recyclerview.widget.RecyclerView
+import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivitySearchHistoryBinding
 import com.esfimus.gbtranslator.view.adapter.OnListItemClickListener
 import com.esfimus.gbtranslator.view.adapter.SearchHistoryAdapter
 import com.esfimus.gbtranslator.view.interactor.SearchHistoryInteractor
+import com.esfimus.gbtranslator.view.viewById
 import com.esfimus.gbtranslator.view.viewmodel.SearchHistoryViewModel
 import com.esfimus.model.data.AppState
 import com.esfimus.model.data.DataModel
@@ -15,6 +18,7 @@ class SearchHistoryActivity : BaseActivity<AppState, SearchHistoryInteractor>() 
     private lateinit var ui: ActivitySearchHistoryBinding
     override lateinit var model: SearchHistoryViewModel
     private val adapter: SearchHistoryAdapter by lazy { SearchHistoryAdapter(onListItemClickListener) }
+    private val searchHistoryRecyclerView by viewById<RecyclerView>(R.id.recyclerview)
 
     private val onListItemClickListener: OnListItemClickListener =
         object : OnListItemClickListener {
@@ -28,14 +32,14 @@ class SearchHistoryActivity : BaseActivity<AppState, SearchHistoryInteractor>() 
         ui = ActivitySearchHistoryBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        if (ui.recyclerview.adapter != null) {
+        if (searchHistoryRecyclerView.adapter != null) {
             throw IllegalStateException("Initiate ViewModel first")
         }
         val viewModel: SearchHistoryViewModel by inject()
         model = viewModel
         model.subscribe().observe(this@SearchHistoryActivity) { renderData(it) }
 
-        ui.recyclerview.adapter = adapter
+        searchHistoryRecyclerView.adapter = adapter
     }
 
     override fun onResume() {
