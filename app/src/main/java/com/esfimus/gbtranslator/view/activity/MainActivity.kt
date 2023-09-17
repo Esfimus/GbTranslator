@@ -1,10 +1,13 @@
 package com.esfimus.gbtranslator.view.activity
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
@@ -23,6 +26,7 @@ import org.koin.android.ext.android.inject
 private const val BOTTOM_SHEET_TAG = "bottom sheet tag"
 private const val DURATION: Long = 5000
 private const val INTERVAL: Long = 1000
+private const val MOVE: Long = 1000
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
@@ -103,6 +107,23 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 } else false
             }
         )
+
+        splashScreenAnimation()
+    }
+
+    private fun splashScreenAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashView ->
+                val splashMove = ObjectAnimator.ofFloat(
+                    splashView, View.TRANSLATION_Y, 0f, -splashView.height.toFloat()
+                )
+                splashMove.apply {
+                    duration = MOVE
+                    doOnEnd { splashView.remove() }
+                    start()
+                }
+            }
+        }
     }
 
     override fun setDataToAdapter(data: List<DataModel>) {
