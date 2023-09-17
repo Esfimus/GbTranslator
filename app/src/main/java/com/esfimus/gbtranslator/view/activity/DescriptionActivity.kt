@@ -2,6 +2,9 @@ package com.esfimus.gbtranslator.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +38,8 @@ class DescriptionActivity : AppCompatActivity() {
             if (imageLink.isNullOrBlank()) {
                 stopRefreshAnimation()
             } else {
-                descriptionImage.loadCoilImage("https:$imageLink")
+                descriptionImage.loadCoilImage("https:$imageLink", false)
+                descriptionMirroredImage.loadCoilImage("https:$imageLink", true)
                 stopRefreshAnimation()
             }
         }
@@ -62,7 +66,7 @@ class DescriptionActivity : AppCompatActivity() {
         if (ui.refreshScreen.isRefreshing) ui.refreshScreen.isRefreshing = false
     }
 
-    private fun ImageView.loadCoilImage(url: String) {
+    private fun ImageView.loadCoilImage(url: String, isBlurred: Boolean) {
         val imageLoader = ImageLoader.Builder(this.context)
             .components { add(SvgDecoder.Factory()) }
             .build()
@@ -73,6 +77,11 @@ class DescriptionActivity : AppCompatActivity() {
             .target(this)
             .build()
         imageLoader.enqueue(request)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isBlurred) {
+            val blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.DECAL)
+            this.setRenderEffect(blurEffect)
+        }
     }
 
     companion object {
