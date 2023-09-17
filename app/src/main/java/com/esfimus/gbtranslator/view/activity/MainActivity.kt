@@ -2,7 +2,9 @@ package com.esfimus.gbtranslator.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbtranslator.R
 import com.esfimus.gbtranslator.databinding.ActivityMainBinding
@@ -19,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
 private const val BOTTOM_SHEET_TAG = "bottom sheet tag"
+private const val DURATION: Long = 5000
+private const val INTERVAL: Long = 1000
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
@@ -76,6 +80,29 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
         searchButton.setOnClickListener(fabClickListener)
         mainRecyclerView.adapter = adapter
+
+        setSplashScreen()
+    }
+
+    private fun setSplashScreen() {
+        var hideSplashScreen = false
+        object: CountDownTimer(DURATION, INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {}
+
+            override fun onFinish() {
+                hideSplashScreen = true
+            }
+        }.start()
+
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object: ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw() = if (hideSplashScreen) {
+                    content.viewTreeObserver.removeOnPreDrawListener(this)
+                    true
+                } else false
+            }
+        )
     }
 
     override fun setDataToAdapter(data: List<DataModel>) {
