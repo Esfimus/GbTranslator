@@ -35,6 +35,13 @@
             android:src="@drawable/icon_no_image"
             android:contentDescription="@string/image" />
 
+        <ImageView
+            android:id="@+id/descriptionMirroredImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleY="-1"
+            android:contentDescription="@string/image"/>
+
     </LinearLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -24,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
 private const val BOTTOM_SHEET_TAG = "bottom sheet tag"
-private const val DURATION: Long = 5000
+private const val DURATION: Long = 3000
 private const val INTERVAL: Long = 1000
 private const val MOVE: Long = 1000
 
